@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Will you forgive me?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Poppins,Arial,sans-serif;
+  background:#e8aebc;
+  display:grid;place-items:center;
+  color:#b33b72;
+}
+.heart{position:fixed;color:#c94d82;font-size:16px;opacity:.55;animation:float 4s ease-in-out infinite}
+.h1{top:14%;left:57%}.h2{right:9%;bottom:18%;animation-delay:1s}
+.h3{left:8%;top:28%;font-size:11px;animation-delay:2s}
+@keyframes float{50%{transform:translateY(-8px) rotate(8deg);opacity:.8}}
+.card{
+  width:min(88vw,900px);height:min(58vh,470px);
+  min-height:390px;
+  background:#fffdfc;
+  border:3px solid #d98da5;
+  border-radius:11px;
+  box-shadow:0 4px 0 rgba(166,64,101,.10);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;
+  transition:opacity .35s,transform .35s;
+}
+.photo{
+  width:145px;height:145px;object-fit:cover;border-radius:9px;
+  display:block;box-shadow:0 1px 3px rgba(0,0,0,.12);
+}
+h1{font-size:29px;margin:20px 0 24px;font-weight:700;color:#b43d73;text-align:center}
+.actions{height:52px;position:relative;width:230px;display:flex;justify-content:center;align-items:center}
+button{
+  border:2px solid #c96888;background:#ef9db4;color:#8d315b;
+  font:600 15px Poppins,Arial,sans-serif;border-radius:7px;
+  width:86px;height:40px;cursor:pointer;
+  box-shadow:0 1px 0 rgba(0,0,0,.05);
+  transition:transform .15s, left .22s, top .22s;
+}
+button:hover{transform:scale(1.04)}
+#no{position:absolute;left:50%;top:6px;transform:translateX(8px)}
+#yes{position:absolute;left:50%;top:6px;transform:translateX(-94px)}
+.final{display:none}
+.final.show{display:flex}
+.hidden{display:none}
+.subheart{font-size:35px;line-height:1;margin-top:3px}
+@media(max-width:600px){
+ .card{width:92vw;height:55vh;min-height:340px}
+ .photo{width:130px;height:130px}
+ h1{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="heart h1">♥</div><div class="heart h2">♥</div><div class="heart h3">♥</div>
+
+<main class="card" id="card">
+  <section id="first">
+    <img class="photo" id="mainPhoto" src="cat1.jpg" alt="Cute cat">
+    <h1>Will you forgive me?</h1>
+    <div class="actions" id="actions">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+  </section>
+
+  <section id="final" class="final">
+    <img class="photo" src="cat3.jpg" alt="Cute kitten holding a heart">
+    <h1>I knew you would forgive me!</h1>
+    <div class="subheart">💗</div>
+  </section>
+</main>
+
+<script>
+const noBtn = document.getElementById('no');
+const yesBtn = document.getElementById('yes');
+const actions = document.getElementById('actions');
+const first = document.getElementById('first');
+const final = document.getElementById('final');
+const photo = document.getElementById('mainPhoto');
+
+let escaped = false;
+
+function moveNo(){
+  escaped = true;
+  const area = actions.getBoundingClientRect();
+  const card = document.getElementById('card').getBoundingClientRect();
+  const maxX = Math.max(0, area.width - 86);
+  const maxY = 12;
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+  noBtn.style.transform = 'none';
+  // Switch between the two cute reference cat photos as the button is chased.
+  photo.src = photo.src.includes('cat1') ? 'cat2.jpg' : 'cat1.jpg';
+}
+
+noBtn.addEventListener('mouseenter', moveNo);
+noBtn.addEventListener('pointerdown', e => { e.preventDefault(); moveNo(); });
+noBtn.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); }, {passive:false});
+
+yesBtn.addEventListener('click', ()=>{
+  document.getElementById('card').style.opacity='0';
+  document.getElementById('card').style.transform='scale(.97)';
+  setTimeout(()=>{
+    first.classList.add('hidden');
+    final.classList.add('show');
+    document.getElementById('card').style.opacity='1';
+    document.getElementById('card').style.transform='scale(1)';
+  },350);
+});
+</script>
+</body>
+</html>
